@@ -51,3 +51,37 @@ function setup() {
 	overAllTexture=createGraphics(width,height)
 	mainGraphics = createGraphics(width,height)
 	overAllTexture.loadPixels()
+	
+	// noStroke()
+	for(var i=0;i<width+50;i++){
+		for(var o=0;o<height+50;o++){
+			overAllTexture.set(i,o,color(150,noise(i/10,i*o/300)*random([0,50,100])))
+		}
+	}
+	overAllTexture.updatePixels()
+	
+	background(100);
+	for(var i=0;i<width;i+=30){
+		for(var o=0;o<height;o+=30){
+			particles.push(new Particle({
+				p: createVector(i,o),	
+				v: createVector(noise(i/10)*10-5,noise(o/10)*10-5),	
+				r: random(200)
+			}))
+		}
+	}
+	background(0)
+}
+
+function draw() {
+	// 
+	particles.forEach(p=>p.draw())
+	particles.forEach(p=>p.update())
+	image(mainGraphics,0,0)
+	
+	push()
+		blendMode(MULTIPLY)
+		image(overAllTexture,0,0)
+	pop()
+	// ellipse(mouseX, mouseY, 20, 20);
+}
